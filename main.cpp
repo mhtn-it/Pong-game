@@ -2,8 +2,11 @@
 
 int main()
 {
-	gameMaster gm(25, 4, 80, 20);
+	resizeConsole(800, 700);
+	gameMaster gm(25, 4, 64, 30);	//width chia het cho 8
 	gm.launchGame();
-	system("pause");
 	return 0;
+	/*cout << "o";
+	Sleep(50);
+	gotoxy(0, 1); cout << "o";*/
 }
