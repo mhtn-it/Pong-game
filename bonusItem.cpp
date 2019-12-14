@@ -24,6 +24,46 @@ item bonusItem::getI(int i)
 	return _item[i];
 }
 
+int bonusItem::getOriX()
+{
+	return oriX;
+}
+
+int bonusItem::getOriY()
+{
+	return oriY;
+}
+
+int bonusItem::getOriW()
+{
+	return oriW;
+}
+
+int bonusItem::getOriH()
+{
+	return oriH;
+}
+
+void bonusItem::setOriX(int x)
+{
+	oriX = x;
+}
+
+void bonusItem::setOriY(int y)
+{
+	oriY = y;
+}
+
+void bonusItem::setOriW(int w)
+{
+	oriW = w;
+}
+
+void bonusItem::setOriH(int h)
+{
+	oriH = h;
+}
+
 void bonusItem::setOriN(int N)
 {
 	oriN = N;
@@ -74,4 +114,15 @@ void bonusItem::pushBack(item i)
 	_item.push_back(i);
 	oriN++;
 	_N++;
+}
+
+void bonusItem::set(bonusItem list)
+{
+	_item = list._item;
+	oriN = _N = list._item.size();
+	oriX = list.oriX;
+	oriY = list.oriY;
+	oriW = list.oriW;
+	oriH = list.oriH;
+	oriN = list.oriN;
 }

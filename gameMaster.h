@@ -4,7 +4,7 @@
 #include "slider.h"
 #include "listItem.h"
 #include "bonusItem.h"
-enum option { OPTION1, OPTION2, OPTION3, OPTION4 };
+enum option { OPTION1, OPTION2, OPTION3, OPTION4, OPTION5, OPTION6 };
 
 //Đối tượng quản lí trò chơi
 class gameMaster
@@ -46,6 +46,10 @@ public:
 	//Xu ly va cham voi bonus
 	void handleBonus();
 	void launchGame();
-	void pauseGame();
-	void saveGame();	//chua lam
+	void pauseGame(bool);
+	void saveGame(bool);	
+	void loadGame(bool&);
+	void HallofFame();
+	void addHallofFame();
+	void clearScreen();
 };

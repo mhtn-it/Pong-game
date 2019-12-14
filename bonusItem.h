@@ -15,6 +15,14 @@ public:
 	void setN(int);
 	void reset();
 	item getI(int);
+	int getOriX();
+	int getOriY();
+	int getOriW();
+	int getOriH();
+	void setOriX(int);
+	void setOriY(int);
+	void setOriW(int);
+	void setOriH(int);
 	void setOriN(int);
 	int getOriN();
 	void deleteItem(int);
@@ -22,5 +30,6 @@ public:
 	bonusItem(int, int, int, int);
 	void drawItem();
 	void pushBack(item);
+	void set(bonusItem);
 };
 

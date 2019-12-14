@@ -69,7 +69,13 @@ void item::set(int x, int y)
 	_x = x;
 	_y = y;
 }
-
+void item::setI(item x)
+{
+	_x = x._x;
+	_y = x._y;
+	_size = x._size;
+	_deleted = x._deleted;
+}
 int item::getSize()
 {
 	return _size;

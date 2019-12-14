@@ -168,30 +168,6 @@ void ball::randomV()
 }
 void ball::move()
 {
-	//switch (_dir) 
-	//{
-	//case STOP:
-	//	break;
-	//case UP:
-	//	_y--;
-	//	break;
-	//case DOWN:
-	//	_y++;
-	//	break;
-	//case UPLEFT:
-	//	_y--; _x--;
-	//	break;
-	//case UPRIGHT:
-	//	_y--; _x++;
-	//	break;
-	//case DOWNLEFT:
-	//	_y++; _x--;
-	//	break;
-	//case DOWNRIGHT:
-	//	_y++; _x++;
-	//default:
-	//	break;
-	//}
 	switch (_dir)
 	{
 	case STOP:

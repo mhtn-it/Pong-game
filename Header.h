@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <Windows.h>
 #include <vector>
+#include<fstream>
 
 using namespace std;
 

@@ -24,6 +24,7 @@ public:
 	void setX(int);
 	void setY(int);
 	void set(int, int);
+	void setI(item);
 	int getSize();
 	void setSize(int);
 	void draw();

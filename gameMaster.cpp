@@ -52,7 +52,7 @@ void gameMaster::display()
 		cout << " ";
 	}
 	//Kiem tra ket thuc game
-	if (_ball->getY() >= _y + _height || _quitGame==true)
+	if (_ball->getY() >= _y + _height || _quitGame == true)
 	{
 		return;
 	}
@@ -285,17 +285,18 @@ void gameMaster::handleWithBot()
 }
 void gameMaster::gameOver()
 {
-	if (_ball->getY() >= _y + _height||_quitGame==true)
+	if (_ball->getY() >= _y + _height || _quitGame == true)
 	{
 		//dung man hinh truoc khi reset game
 		//_getch();
+		addHallofFame();
 		reset();
 		_speed = 0;
 		_score = 0;
 		_quitGame = true;
 		display();
 	}
-	if (_item->getN()==0)
+	if (_item->getN() == 0)
 	{
 		gotoxy(40, 18); cout << "YOU WIN!";
 		_getch();
@@ -403,11 +404,15 @@ void gameMaster::launchGame()
 	gotoxy(_x - 14, _y + 3);
 	cout << "New Game";
 	textcolor(4);
+	gotoxy(_x - 16, _y + 5);
+	cout << "Continue Game";
 	gotoxy(_x - 16, _y + 7);
 	cout << "Play with BOT";
-	gotoxy(_x - 15, _y + 11);
+	gotoxy(_x - 15, _y + 9);
 	cout << "How to play";
-	gotoxy(_x - 14, _y + 15);
+	gotoxy(_x - 16, _y + 11);
+	cout << "Hall of Fame";
+	gotoxy(_x - 14, _y + 13);
 	cout << "Quit Game";
 	option _option = OPTION1;
 	char a = 'a';
@@ -423,13 +428,15 @@ void gameMaster::launchGame()
 				if (_option == OPTION1) _option = OPTION2;
 				else if (_option == OPTION2) _option = OPTION3;
 				else if (_option == OPTION3) _option = OPTION4;
-				else if (_option == OPTION4) _option = OPTION1;
+				else if (_option == OPTION4) _option = OPTION5;
+				else if (_option == OPTION5) _option = OPTION6;
+				else if (_option == OPTION6) _option = OPTION1;
 
 				if (_option == OPTION2)
 				{
 					textcolor(6);
-					gotoxy(_x - 16, _y + 7);
-					cout << "Play with BOT";
+					gotoxy(_x - 16, _y + 5);
+					cout << "Continue Game";
 					textcolor(4);
 					gotoxy(_x - 14, _y + 3);
 					cout << "New Game";
@@ -437,20 +444,38 @@ void gameMaster::launchGame()
 				else if (_option == OPTION3)
 				{
 					textcolor(6);
-					gotoxy(_x - 15, _y + 11);
+					gotoxy(_x - 16, _y + 7);
+					cout << "Play with BOT";
+					textcolor(4);
+					gotoxy(_x - 16, _y + 5);
+					cout << "Continue Game";
+				}
+				else if (_option == OPTION4)
+				{
+					textcolor(6);
+					gotoxy(_x - 15, _y + 9);
 					cout << "How to play";
 					textcolor(4);
 					gotoxy(_x - 16, _y + 7);
 					cout << "Play with BOT";
 				}
-				else if (_option == OPTION4)
+				else if (_option == OPTION5)
 				{
 					textcolor(6);
-					gotoxy(_x - 14, _y + 15);
+					gotoxy(_x - 16, _y + 11);
+					cout << "Hall of Fame";
+					textcolor(4);
+					gotoxy(_x - 15, _y + 9);
+					cout << "How to play";
+				}
+				else if (_option == OPTION6)
+				{
+					textcolor(6);
+					gotoxy(_x - 14, _y + 13);
 					cout << "Quit Game";
 					textcolor(4);
-					gotoxy(_x - 15, _y + 11);
-					cout << "How to play";
+					gotoxy(_x - 16, _y + 11);
+					cout << "Hall of Fame";
 				}
 				else if (_option == OPTION1)
 				{
@@ -458,17 +483,19 @@ void gameMaster::launchGame()
 					gotoxy(_x - 14, _y + 3);
 					cout << "New Game";
 					textcolor(4);
-					gotoxy(_x - 14, _y + 15);
+					gotoxy(_x - 14, _y + 13);
 					cout << "Quit Game";
 				}
 			}
 			//Nếu phát hiện có múi tên lên
 			else if (a == 72)
 			{
-				if (_option == OPTION1) _option = OPTION4;
+				if (_option == OPTION1) _option = OPTION6;
 				else if (_option == OPTION2) _option = OPTION1;
 				else if (_option == OPTION3) _option = OPTION2;
 				else if (_option == OPTION4) _option = OPTION3;
+				else if (_option == OPTION5) _option = OPTION4;
+				else if (_option == OPTION6) _option = OPTION5;
 
 				if (_option == OPTION1)
 				{
@@ -476,31 +503,49 @@ void gameMaster::launchGame()
 					gotoxy(_x - 14, _y + 3);
 					cout << "New Game";
 					textcolor(4);
-					gotoxy(_x - 16, _y + 7);
-					cout << "Play with BOT";
+					gotoxy(_x - 16, _y + 5);
+					cout << "Continue Game";
 				}
 				else if (_option == OPTION2)
 				{
 					textcolor(6);
+					gotoxy(_x - 16, _y + 5);
+					cout << "Continue Game";
+					textcolor(4);
 					gotoxy(_x - 16, _y + 7);
 					cout << "Play with BOT";
-					textcolor(4);
-					gotoxy(_x - 15, _y + 11);
-					cout << "How to play";
 				}
 				else if (_option == OPTION3)
 				{
 					textcolor(6);
-					gotoxy(_x - 15, _y + 11);
-					cout << "How to play";
+					gotoxy(_x - 16, _y + 7);
+					cout << "Play with BOT";
 					textcolor(4);
-					gotoxy(_x - 14, _y + 15);
-					cout << "Quit Game";
+					gotoxy(_x - 15, _y + 9);
+					cout << "How to play";
 				}
 				else if (_option == OPTION4)
 				{
 					textcolor(6);
-					gotoxy(_x - 14, _y + 15);
+					gotoxy(_x - 15, _y + 9);
+					cout << "How to play";
+					textcolor(4);
+					gotoxy(_x - 16, _y + 11);
+					cout << "Hall of Fame";
+				}
+				else if (_option == OPTION5)
+				{
+					textcolor(6);
+					gotoxy(_x - 16, _y + 11);
+					cout << "Hall of Fame";
+					textcolor(4);
+					gotoxy(_x - 14, _y + 13);
+					cout << "Quit Game";
+				}
+				else if (_option == OPTION6)
+				{
+					textcolor(6);
+					gotoxy(_x - 14, _y + 13);
 					cout << "Quit Game";
 					textcolor(4);
 					gotoxy(_x - 14, _y + 3);
@@ -508,6 +553,7 @@ void gameMaster::launchGame()
 				}
 			}
 			//Nếu phát hiện có bấm phím ENTER
+			bool isBot =true;
 			if (a == 13)
 			{
 				switch (_option)
@@ -515,6 +561,7 @@ void gameMaster::launchGame()
 					//New game
 				case OPTION1:
 				{
+					clearScreen();
 					textcolor(7);
 					_ball->randomV();
 					_ball->randomDirection();
@@ -523,7 +570,7 @@ void gameMaster::launchGame()
 					while (_quitGame != true)
 					{
 						//Chế độ chơi thường 
-						pauseGame();
+						pauseGame(isBot);
 						controlEveryThing();
 						handle();
 						display();
@@ -536,6 +583,28 @@ void gameMaster::launchGame()
 				}
 				case OPTION2:
 				{
+					clearScreen();
+					loadGame(isBot);
+					_item->drawItem();
+					while (_quitGame != true)
+					{
+						pauseGame(isBot);
+						controlEveryThing();
+						if (isBot == false)
+							handle();
+						else
+							handleWithBot();
+						display();
+						gameOver();
+						Sleep(170 - _speed);
+					}
+					textcolor(7);
+					_quitGame = false;
+					break;
+				}
+				case OPTION3:
+				{
+					clearScreen();
 					textcolor(7);
 					_ball->randomV();
 					_ball->randomDirection();
@@ -544,7 +613,8 @@ void gameMaster::launchGame()
 					while (_quitGame != true)
 					{
 						//Chế độ chơi với máy
-						pauseGame();
+						isBot = true;
+						pauseGame(isBot);
 						controlEveryThing();
 						handleWithBot();
 						display();
@@ -556,28 +626,34 @@ void gameMaster::launchGame()
 					break;
 				}
 				//How to play
-				case OPTION3:
+				case OPTION4:
 				{
+					clearScreen();
 					textcolor(2);
 					gotoxy(_x + (_width / 8), _y + (_height / 8));
 					cout << "Use '->' and '<-' to control";
-					_getch();
-					gotoxy(_x + (_width / 8), _y + (_height / 8));
-					cout << "                                           ";
-				}
-				break;
-				case OPTION4:
-				{
 					break;
 				}
+				case OPTION5:
+				{
+					clearScreen();
+					HallofFame();
+					break;
 				}
-				if (_option == OPTION4) break;
+				case OPTION6:
+				{
+					return;
+					break;
+				}
+				default:
+					break;
+				}
 			}
 		}
 	} while (true);
 }
 
-void gameMaster::pauseGame()
+void gameMaster::pauseGame(bool isBot)
 {
 	char a;
 	//Nhận biết khi phát hiện có phím được bấm
@@ -671,7 +747,7 @@ void gameMaster::pauseGame()
 							gotoxy(_x - 25, _y + 21); cout << "	                ";
 							gotoxy(_x - 25, _y + 22); cout << "	                ";
 							gotoxy(_x - 25, _y + 23); cout << "	                ";
-							saveGame();
+							saveGame(isBot);
 							_quitGame = true;
 							return;
 							break;
@@ -696,8 +772,178 @@ void gameMaster::pauseGame()
 		}
 	}
 }
-
-void gameMaster::saveGame()
+void gameMaster::addHallofFame()
 {
-
+	vector<int> point;
+	int _point;
+	fstream f;
+	f.open("HallofFame.txt", ios::in);
+	while (!f.eof())
+	{
+		f >> _point;
+		point.push_back(_point);
+		f << "\n";
+	}
+	for (int i = 0; i < point.size(); i++)
+	{
+		if (_score > point[i])
+		{
+			int j = i;
+			int temp[10]; int m = 0;
+			temp[m] = point[i];
+			for (j; j < point.size() - 1; j++)
+			{
+				m++;
+				temp[m] = point[j + 1];
+				point[j + 1] = temp[m - 1];
+			}
+			point[i] = _score;
+			break;
+		}
+	}
+	f.close();
+	f.open("HallofFame.txt", ios::out | ios::trunc);
+	for (int i = 0; i < 10; i++)
+	{
+		f << point[i] << endl;
+	}
+	f.close();
 }
+void gameMaster::clearScreen()
+{
+	for (int i = 0; i < _height-1; i++)
+		for (int j = 0; j < _width-1; j++)
+		{
+			gotoxy(_x + j + 1, _y + i + 1); cout << " ";
+		}
+}
+void gameMaster::HallofFame()
+{
+	ifstream f;
+	f.open("HallofFame.txt");
+	int t1, t2, t3, t4, t5, t6, t7, t8, t9, t10;
+	f >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8 >> t9 >> t10;
+	textcolor(9);
+	gotoxy(_x + 25, _y + 3);
+	cout << "HALL OF FAME";
+	textcolor(14);
+	gotoxy(_x + 26, _y + 7);
+	cout << "Top 1: " << t1;
+	gotoxy(_x + 26, _y + 9);
+	cout << "Top 2: " << t2;
+	gotoxy(_x + 26, _y + 11);
+	cout << "Top 3: " << t3;
+	gotoxy(_x + 26, _y + 13);
+	cout << "Top 4: " << t4;
+	gotoxy(_x + 26, _y + 15);
+	cout << "Top 5: " << t5;
+	gotoxy(_x + 26, _y + 17);
+	cout << "Top 6: " << t6;
+	gotoxy(_x + 26, _y + 19);
+	cout << "Top 7: " << t7;
+	gotoxy(_x + 26, _y + 21);
+	cout << "Top 8: " << t8;
+	gotoxy(_x + 26, _y + 23);
+	cout << "Top 9: " << t9;
+	gotoxy(_x + 26, _y + 25);
+	cout << "Top 10: " << t10;
+}
+void gameMaster::saveGame(bool isBot)
+{
+	ofstream f;
+	f.open("Save.txt", ios::trunc);
+	f << isBot << endl;
+	f << _x << endl << _y << endl;
+	f << _width << endl << _height << endl;
+	f << _score << endl;
+	f << _ball->getOriginalX() << endl << _ball->getOriginalY() << endl << _ball->getX() << endl << _ball->getY() << endl << _ball->getPreX() << endl << _ball->getPreY() << endl << _ball->getVX() << endl << _ball->getVY() << endl << (int)_ball->getDirection() << endl;
+	f << _slider->getX() << endl << _slider->getY() << endl << _slider->getOriginalX() << endl << _slider->getOriginalY() << endl << _slider->getSize() << endl;
+	f << _speed << endl;
+	f << _item->getN() << endl << _item->getOriX() << endl << _item->getOriY() << endl << _item->getOriW() << endl << _item->getOriH() << endl << _item->getOriN() << endl;
+	//vector<item>::iterator it;
+	for (int i = 0; i < _item->getN(); i++)
+	{
+		f << _item->getI(i).getX() << " " << _item->getI(i).getY() << " " << _item->getI(i).getSize() << " " << _item->getI(i).getDelete() << " " << _item->getI(i).getSpe() << ",";
+	}
+	f << _bonus->getN() << endl << _bonus->getOriX() << endl << _bonus->getOriY() << endl << _bonus->getOriW() << endl << _bonus->getOriH() << endl << _bonus->getOriN() << endl;
+	for (int i = 0; i < _bonus->getN(); i++)
+	{
+		f << _bonus->getI(i).getX() << " " << _bonus->getI(i).getY() << " " << _bonus->getI(i).getSize() << " " << _bonus->getI(i).getDelete() << " " << _bonus->getI(i).getSpe() << ",";
+	}
+	f.close();
+}
+void gameMaster::loadGame(bool& isBot)
+{
+	ifstream f;
+	f.open("Save.txt");
+	listItem _list;
+	f >> isBot;
+	f >> _x >> _y;
+	f >> _width >> _height;
+	f >> _score;
+	int bOx, bOy, bx, by, bPx, bPy, bvx, bvy, bD, sx, sy, sOx, sOy, ss, ln, lOx, lOy, lOw, lOh, lOn;
+	f >> bOx >> bOy >> bx >> by >> bPx >> bPy >> bvx >> bvy >> bD;
+	f >> sx >> sy >> sOx >> sOy >> ss;
+	f >> _speed;
+	f >> ln >> lOx >> lOy >> lOw >> lOh >> lOn;
+	for (int i = 0; i < ln; i++)
+	{
+		int ix, iy, is, id, ispe; char phay;
+		f >> ix >> iy >> is >> id >> ispe;
+		f.get(phay);
+		item x;
+		x.setX(ix);
+		x.setY(iy);
+		x.setSize(is);
+		x.setDelete(id);
+		x.setSpe(ispe);
+		_list.pushI(x); //cout << _item->getI(i).getDelete();
+	}
+	int bonusN, bonusX, bonusY, bonusW, bonusH, bonusOriN;
+	f >> bonusN >> bonusX >> bonusY >> bonusW >> bonusH >> bonusOriN;
+	bonusItem _listB;
+	for (int i = 0; i < bonusN; i++)
+	{
+		int ix, iy, is, id, ispe; char phay;
+		f >> ix >> iy >> is >> id >> ispe;
+		f.get(phay);
+		item x;
+		x.setX(ix);
+		x.setY(iy);
+		x.setSize(is);
+		x.setDelete(id);
+		x.setSpe(ispe);
+		_listB.pushBack(x); //cout << _item->getI(i).getDelete();
+	}
+	f.close();
+
+	_ball->setOriginalX(bOx);
+	_ball->setOriginalY(bOy);
+	_ball->setX(bx);
+	_ball->setY(by);
+	_ball->setPreX(bPx); //cout << bPx;
+	_ball->setPreY(bPy);
+	_ball->setVX(bvx);
+	_ball->setVY(bvy);
+	_ball->setDirecton((ballDirection)bD);
+	_slider->setX(sx);
+	_slider->setY(sy);
+	_slider->setOriginalX(sOx);
+	_slider->setOriginalY(sOy);
+	_slider->setSize(ss);
+	_list.setN(ln);
+	_list.setOriX(lOx);
+	_list.setOriY(lOy);
+	_list.setOriW(lOw);
+	_list.setOriH(lOh);
+	_list.setOriN(lOn);
+	_item->set(_list);
+	_listB.setN(bonusN);
+	_listB.setOriX(bonusX);
+	_listB.setOriY(bonusY);
+	_listB.setOriW(bonusW);
+	_listB.setOriH(bonusH);
+	_listB.setOriN(bonusOriN);
+	_bonus->set(_listB);
+}
+
