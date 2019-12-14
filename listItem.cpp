@@ -68,6 +68,10 @@ listItem::listItem(int x, int y, int width, int height)
 		_item[i].setSpe(0);
 	}
 }
+void listItem::setXi(int i, int x)
+{
+	_item[i].setX(x);
+}
 void listItem::reset()
 {
 	oriN = _N = 40;

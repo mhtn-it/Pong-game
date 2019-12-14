@@ -19,5 +19,6 @@ public:
 	void deleteItem(int);
 	listItem(vector<item>);
 	listItem(int, int, int, int);
+	void setXi(int, int);
 	void drawItem();
 };
