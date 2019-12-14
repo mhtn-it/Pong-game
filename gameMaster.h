@@ -45,6 +45,7 @@ public:
 	void randomBonus();
 	//Xu ly va cham voi bonus
 	void handleBonus();
-	//void deleteItem();
 	void launchGame();
+	void pauseGame();
+	void saveGame();	//chua lam
 };

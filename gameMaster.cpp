@@ -16,7 +16,7 @@ gameMaster::gameMaster(int x, int y, int width, int height)
 	_width = width;
 	_height = height;
 	_score = 0;
-	_slider = new slider(x + (width / 2) - width/8, y + height - 1);
+	_slider = new slider(x + (width / 2) - width / 8, y + height - 1);
 	_slider->setSize(width / 4);
 	_ball = new ball(x + (width / 2), y + (height / 2));
 	_item = new listItem(x, y, width, height);
@@ -30,12 +30,14 @@ void gameMaster::reset()
 	_slider->reset();
 	_slider->setSize(_width / 4);
 	_item->reset();
+	_bonus->reset();
 }
 void gameMaster::scoreUp()
 {
 	if (checkItem())
 	{
 		_score++;
+		randomBonus();
 	}
 }
 void gameMaster::display()
@@ -50,7 +52,7 @@ void gameMaster::display()
 		cout << " ";
 	}
 	//Kiem tra ket thuc game
-	if (_ball->getY() >= _y + _height)
+	if (_ball->getY() >= _y + _height || _quitGame==true)
 	{
 		return;
 	}
@@ -77,7 +79,7 @@ void gameMaster::controlEveryThing()
 		a = _getch();
 		if ((a == 75) && _slider->getX() >= _x + 4)
 		{
-			for (int i = _slider->getSize()-4; i < _slider->getSize(); i++)
+			for (int i = _slider->getSize() - 4; i < _slider->getSize(); i++)
 			{
 				gotoxy(_slider->getX() + i, _slider->getY());
 				cout << " ";
@@ -100,9 +102,9 @@ void gameMaster::handle()
 	//Bóng chạm thanh
 	if (_slider->getX() <= _ball->getX() && _ball->getX() < _slider->getX() + _slider->getSize() && _ball->getY() == _slider->getY() - 1)
 	{
-		if (_ball->getX() < _slider->getX() + _slider->getSize()/4 || _ball->getX() > _slider->getX() + _slider->getSize()/4*3)
+		if (_ball->getX() < _slider->getX() + _slider->getSize() / 4 || _ball->getX() > _slider->getX() + _slider->getSize() / 4 * 3)
 			_ball->setVX(2);
-		else if (_ball->getX() < _slider->getX() + _slider->getSize()/2-1 || _ball->getX() > _slider->getX() + _slider->getSize()/2)
+		else if (_ball->getX() < _slider->getX() + _slider->getSize() / 2 - 1 || _ball->getX() > _slider->getX() + _slider->getSize() / 2)
 			_ball->setVX(1);
 		else
 			_ball->setVX(0);
@@ -120,7 +122,7 @@ void gameMaster::handle()
 			_ball->setDirecton(UP);
 		}
 		//Tăng tốc cho trái banh
-		if (_speed <= 150)
+		if (_speed <= 105)
 			_speed += 15;
 	}
 	//Bóng chạm biên trái
@@ -174,6 +176,7 @@ void gameMaster::handle()
 	}
 	//Cong diem
 	scoreUp();
+	handleBonus();
 	_ball->setPreX(_ball->getX());
 	_ball->setPreY(_ball->getY());
 	_ball->move();
@@ -182,14 +185,14 @@ void gameMaster::handleWithBot()
 {
 	if (_ball->getX() < _slider->getX() && _slider->getX() >= _x + 4)
 	{
-		for (int i = _slider->getSize()-4; i < _slider->getSize(); i++)
+		for (int i = _slider->getSize() - 4; i < _slider->getSize(); i++)
 		{
 			gotoxy(_slider->getX() + i, _slider->getY());
 			cout << " ";
 		}
 		_slider->moveLeft();
 	}
-	else if (_ball->getX() > _slider->getX() + _slider->getSize()-1 && _slider->getX() <= _x + _width + 20)
+	else if (_ball->getX() > _slider->getX() + _slider->getSize() - 1 && _slider->getX() <= _x + _width + 20)
 	{
 		for (int i = 0; i <= 3; i++)
 		{
@@ -221,7 +224,7 @@ void gameMaster::handleWithBot()
 			_ball->setDirecton(UP);
 		}
 		//Tăng tốc cho trái banh
-		if (_speed <= 150)
+		if (_speed <= 105)
 			_speed += 15;
 	}
 	//Bóng chạm biên trái
@@ -275,23 +278,24 @@ void gameMaster::handleWithBot()
 	}
 	//Cong diem
 	scoreUp();
+	handleBonus();
 	_ball->setPreX(_ball->getX());
 	_ball->setPreY(_ball->getY());
 	_ball->move();
 }
 void gameMaster::gameOver()
 {
-	if (_ball->getY() >= _y + _height)
+	if (_ball->getY() >= _y + _height||_quitGame==true)
 	{
 		//dung man hinh truoc khi reset game
-		_getch();
+		//_getch();
 		reset();
 		_speed = 0;
 		_score = 0;
 		_quitGame = true;
 		display();
 	}
-	if (_score == _item->getOriN())
+	if (_item->getN()==0)
 	{
 		gotoxy(40, 18); cout << "YOU WIN!";
 		_getch();
@@ -325,14 +329,14 @@ bool gameMaster::checkItem()
 int gameMaster::checkBonus()
 {
 	item temp;
-	for (int i = 0; i < _item->getN(); i++)
+	for (int i = 0; i < _bonus->getN(); i++)
 	{
 		temp = _bonus->getI(i);
 		if (!temp.getDelete())
 		{
 			if (_ball->getNextY() == temp.getY() && _ball->getNextY() == temp.getY() && _ball->getNextX() >= temp.getX() && _ball->getNextX() <= temp.getX() + temp.getSize() - 2)
 			{
-				_item->deleteItem(i);
+				_bonus->deleteItem(i);
 				temp.setDelete(true);
 				temp.draw();
 				return int(temp.getSpe());
@@ -340,6 +344,51 @@ int gameMaster::checkBonus()
 		}
 	}
 	return -1;
+}
+void gameMaster::randomBonus()
+{
+	if (_score % 5 == 0)
+	{
+		item newItem;
+		newItem.set(_x + 2 + rand() % (_width - 10), _y + 5 + _score / 5);
+		newItem.setSpe(rand() % 6 + 1);
+		newItem.draw();
+		_bonus->pushBack(newItem);
+	}
+}
+void gameMaster::handleBonus()
+{
+	int check = checkBonus();
+	if (check == -1)
+		return;
+	switch (check)
+	{
+	case 1:
+		_score += 5;
+		break;
+	case 2:
+		if (_score >= 5)
+			_score -= 5;
+		else
+			_score = 0;
+		break;
+	case 3:
+		_score *= 2;
+		break;
+	case 4:
+		_score = int(_score / 2);
+		break;
+	case 5:
+		if (_slider->getSize() == 16)
+			_slider->setSize(8);
+		break;
+	case 6:
+		if (_slider->getSize() == 8)
+			_slider->setSize(16);
+		break;
+	default:
+		break;
+	}
 }
 void gameMaster::launchGame()
 {
@@ -474,6 +523,7 @@ void gameMaster::launchGame()
 					while (_quitGame != true)
 					{
 						//Chế độ chơi thường 
+						pauseGame();
 						controlEveryThing();
 						handle();
 						display();
@@ -494,6 +544,7 @@ void gameMaster::launchGame()
 					while (_quitGame != true)
 					{
 						//Chế độ chơi với máy
+						pauseGame();
 						controlEveryThing();
 						handleWithBot();
 						display();
@@ -524,4 +575,129 @@ void gameMaster::launchGame()
 			}
 		}
 	} while (true);
+}
+
+void gameMaster::pauseGame()
+{
+	char a;
+	//Nhận biết khi phát hiện có phím được bấm
+	if (_kbhit())
+	{
+		a = _getch();
+		if (a == 'p')
+		{
+			textcolor(7); gotoxy(_x - 16, _y + 19); cout << "PAUSE GAME!!!";
+			textcolor(4); gotoxy(_x - 16, _y + 21); cout << "1. Continue";
+			textcolor(7); gotoxy(_x - 16, _y + 22); cout << "2. Save & Exit";
+			textcolor(7); gotoxy(_x - 16, _y + 23); cout << "3. Exit";
+			option _op = OPTION1;
+			while (a != 80 || a != 72 || a != 13)
+			{
+				if (_kbhit())
+				{
+					//Lưu giá trị của phím vừa bấm
+					a = _getch();
+					//Nếu phát hiện có dấu mũi tên xuống
+					if (a == 80)
+					{
+						if (_op == OPTION1) _op = OPTION2;
+						else if (_op == OPTION2) _op = OPTION3;
+						else if (_op == OPTION3) _op = OPTION1;
+						if (_op == OPTION2)
+						{
+							textcolor(7); gotoxy(_x - 16, _y + 21); cout << "1. Continue";
+							textcolor(4); gotoxy(_x - 16, _y + 22); cout << "2. Save & Exit";
+							textcolor(7); gotoxy(_x - 16, _y + 23); cout << "3. Exit";
+						}
+						else if (_op == OPTION1)
+						{
+							textcolor(4); gotoxy(_x - 16, _y + 21); cout << "1. Continue";
+							textcolor(7); gotoxy(_x - 16, _y + 22); cout << "2. Save & Exit";
+							textcolor(7); gotoxy(_x - 16, _y + 23); cout << "3. Exit";
+						}
+						else if (_op == OPTION3)
+						{
+							textcolor(7); gotoxy(_x - 16, _y + 21); cout << "1. Continue";
+							textcolor(7); gotoxy(_x - 16, _y + 22); cout << "2. Save & Exit";
+							textcolor(4); gotoxy(_x - 16, _y + 23); cout << "3. Exit";
+						}
+					}
+					//Nếu phát hiện có múi tên lên
+					else if (a == 72)
+					{
+						if (_op == OPTION1) _op = OPTION3;
+						else if (_op == OPTION2) _op = OPTION1;
+						else if (_op == OPTION3) _op = OPTION2;
+						if (_op == OPTION2)
+						{
+							textcolor(7); gotoxy(_x - 16, _y + 21); cout << "1. Continue";
+							textcolor(4); gotoxy(_x - 16, _y + 22); cout << "2. Save & Exit";
+							textcolor(7); gotoxy(_x - 16, _y + 23); cout << "3. Exit";
+						}
+						else if (_op == OPTION1)
+						{
+							textcolor(4); gotoxy(_x - 16, _y + 21); cout << "1. Continue";
+							textcolor(7); gotoxy(_x - 16, _y + 22); cout << "2. Save & Exit";
+							textcolor(7); gotoxy(_x - 16, _y + 23); cout << "3. Exit";
+						}
+						else if (_op == OPTION3)
+						{
+							textcolor(7); gotoxy(_x - 16, _y + 21); cout << "1. Continue";
+							textcolor(7); gotoxy(_x - 16, _y + 22); cout << "2. Save & Exit";
+							textcolor(4); gotoxy(_x - 16, _y + 23); cout << "3. Exit";
+						}
+					}
+					//Nếu phát hiện có bấm phím ENTER
+					if (a == 13)
+					{
+						switch (_op)
+						{
+							//Continue
+						case OPTION1:
+						{
+							textcolor(7);
+							gotoxy(_x - 16, _y + 19); cout << "              ";
+							gotoxy(_x - 25, _y + 21); cout << "	                ";
+							gotoxy(_x - 25, _y + 22); cout << "	                ";
+							gotoxy(_x - 25, _y + 23); cout << "	                ";
+							return;
+							break;
+						}
+						//SaveGame
+						case OPTION2:
+						{
+							textcolor(7);
+							gotoxy(_x - 16, _y + 19); cout << "              ";
+							gotoxy(_x - 25, _y + 21); cout << "	                ";
+							gotoxy(_x - 25, _y + 22); cout << "	                ";
+							gotoxy(_x - 25, _y + 23); cout << "	                ";
+							saveGame();
+							_quitGame = true;
+							return;
+							break;
+						}
+						case OPTION3:
+						{
+							textcolor(7);
+							gotoxy(_x - 16, _y + 19); cout << "              ";
+							gotoxy(_x - 25, _y + 21); cout << "	                ";
+							gotoxy(_x - 25, _y + 22); cout << "	                ";
+							gotoxy(_x - 25, _y + 23); cout << "	                ";
+							_quitGame = true;
+							return;
+							break;
+						}
+						default:
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void gameMaster::saveGame()
+{
+
 }

@@ -46,35 +46,19 @@ bonusItem::bonusItem(vector<item>)
 
 bonusItem::bonusItem(int x, int y, int width, int height)
 {
-	oriN=_N = rand() % 5 + 10;
-	oriX = x;
-	oriY = y;
-	oriW = width;
-	oriH = height;
-	_item.resize(_N);
-	int newX = x + 2;
-	int newY = y + 5;
-	for (int i = 0; i < _N; i++)
-	{
-		newX =x+ rand() % (width - 10);
-		newY++;
-		_item[i].set(newX, newY);
-	}
+	_item.resize(0);
+	_N = oriN = 0;
 }
 
 void bonusItem::reset()
 {
-	oriN = _N = rand() % 5 + 10;
-	_item.resize(_N);
-	int newX = oriX + 2;
-	int newY = oriY + 5;
 	for (int i = 0; i < _N; i++)
 	{
-		newX = oriX + rand() % (oriW - 10);
-		newY++;
-		_item[i].set(newX, newY);
-		_item[i].setSpe(rand() % 6 + 1);
+		_item[i].setDelete(true);
+		_item[i].draw();
 	}
+	_item.resize(0);
+	_N = oriN = 0;
 }
 
 void bonusItem::drawItem()
@@ -83,4 +67,11 @@ void bonusItem::drawItem()
 	{
 		_item[i].draw();
 	}
+}
+
+void bonusItem::pushBack(item i)
+{
+	_item.push_back(i);
+	oriN++;
+	_N++;
 }

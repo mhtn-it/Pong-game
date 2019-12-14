@@ -21,5 +21,6 @@ public:
 	bonusItem(vector<item>);
 	bonusItem(int, int, int, int);
 	void drawItem();
+	void pushBack(item);
 };
 
